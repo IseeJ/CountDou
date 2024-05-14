@@ -48,8 +48,7 @@ function renderEvents() {
     
     eventElement.innerHTML = `
       <h2><strong>${event.name}</strong></h2>
-      <p>Quantity: ${event.quantity}</p>
-      <p>Type: ${event.type}</p>
+      <p>${event.quantity} ${event.type}</p>
     `;
     const removeButton = document.createElement('button');
     removeButton.classList.add('remove-event');
