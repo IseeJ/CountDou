@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap">
+</head>
+<body>
+  <div class="dark-container">
+    <img src="initial.png" alt="Initial GIF" class="cute-gif" id="PET">
+    <div id="events"></div>
+    <form id="eventForm">
+      <label for="eventName">ลูกค้า:</label>
+      <input type="text" id="eventName" required>
+      <br>
+      <label for="eventQuantity">จำนวนลูก:</label>
+      <input type="number" id="eventQuantity" required>
+      <br>
+      <label for="eventType">ชนิด:</label>
+      <input type="text" id="eventType">
+      <br>
+      <label for="eventColor">Color:</label>
+      <input type="color" id="eventColor" value="#843b62" required>
+      <br>
+      <button type="submit" class="start-button">Add</button>
+      <br>
+      <br>
+    </form>
+    <div id="totalQuantity">Total Quantity: 0</div>
+    <div id="totalGrams">Total Grams: 0</div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
