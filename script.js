@@ -28,7 +28,7 @@ function updateGifExpression() {
 }
 
 function calculateTotalGrams(quantity) {
-  return quantity * 20;
+  return (quantity/24).toFixed(3);
 }
 
 function renderEvents() {
@@ -61,8 +61,8 @@ function renderEvents() {
     totalQuantity += event.quantity;
   });
 
-  totalQuantityElement.textContent = `Total Quantity: ${totalQuantity}`;
-  totalGramsElement.textContent = `Total Grams: ${calculateTotalGrams(totalQuantity)}`;
+  totalQuantityElement.textContent = `รวม: ${totalQuantity}`;
+  totalGramsElement.textContent = `แป้งกี่ลูก: ${calculateTotalGrams(totalQuantity)}`;
 
   const removeButtons = document.querySelectorAll('.remove-event');
   removeButtons.forEach(button => {
