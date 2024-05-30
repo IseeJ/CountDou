@@ -1,5 +1,6 @@
 # CountDou
-for counting mandou
+for counting mandou: https://iseej.github.io/CountDou/
+for coubnting down: https://iseej.github.io/CountDou/savevent
 
-https://iseej.github.io/CountDou/
+
 Made by I-see Warisa Jaidee
