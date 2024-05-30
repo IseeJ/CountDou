@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap">
+</head>
+<body>
+  <div class="dark-container">
+    <img src="initial.png" alt="Initial GIF" class="cute-gif" id="PET">
+    <div id="events"></div>
+    <form id="eventForm">
+      <label for="eventName">Name:</label>
+      <input type="text" id="eventName" required>
+      <br>
+      <label for="eventDate">Date:</label>
+      <input type="date" id="eventDate" required>
+      <br>
+      <label for="eventColor">Color:</label>
+      <input type="color" id="eventColor" value="#843b62" required>
+      <br>
+      <button type="submit" class="start-button">Add</button>
+    </form>
+  </div>
+  <script>
+    const eventsContainer = document.getElementById('events');
+    const eventForm = document.getElementById('eventForm');
+    const cuteGif = document.getElementById('PET');
+
+    function getDaysRemaining(eventDate) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      const today = new Date();
+      const diffDays = Math.round((eventDate - today) / oneDay);
+
+      return diffDays;
+    }
+
+    function parseDate(dateString) {
+      const [year, month, day] = dateString.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function convertDays(days) {
+      const years = Math.floor(days / 365);
+      const months = Math.floor((days % 365) / 30);
+      const remainingDays = days % 30;
+      return { years, months, remainingDays };
+    }
+
+    function getTextColor(bgColor) {
+      const hexToRgb = (hex) => hex.match(/\w\w/g).map(x => parseInt(x, 16));
+      const [r, g, b] = hexToRgb(bgColor);
+      const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      return luminance > 0.5 ? '#000000' : '#ffffff';
+    }
+
+    function updateGifExpression() {
+      const numberOfEvents = events.length;
+      if (numberOfEvents >= 5) {
+        cuteGif.src = 'happy.png';
+      } else if (numberOfEvents >= 3) {
+        cuteGif.src = 'neutral.png';
+      } else {
+        cuteGif.src = 'initial.png';
+      }
+    }
+
+    function renderEvents() {
+      eventsContainer.innerHTML = '';
+      events.forEach((event, index) => {
+        const daysRemaining = getDaysRemaining(event.date);
+        const { years, months, remainingDays } = convertDays(Math.abs(daysRemaining));
+        const eventContainer = document.createElement('div');
+        eventContainer.classList.add('event-container');
+        eventContainer.style.backgroundColor = event.color;
+        eventContainer.style.borderRadius = '20px';
+        const eventElement = document.createElement('div');
+        eventElement.classList.add('event-content');
+        const textColor = getTextColor(event.color);
+        eventElement.style.color = textColor;
+
+        const daysText = daysRemaining >= 0 ? `${years} years ${months} months ${remainingDays} days` : `-${years} years ${months} months ${Math.abs(remainingDays)} days`;
+
+        eventElement.innerHTML = `
+          <h2><strong>${event.name}</strong></h2>
+          <p>${event.date.toDateString()}</p>
+          <p>${daysText}</p>
+        `;
+        const removeButton = document.createElement('button');
+        removeButton.classList.add('remove-event');
+        removeButton.setAttribute('data-index', index);
+        removeButton.innerHTML = '-';
+        eventContainer.appendChild(eventElement);
+        eventContainer.appendChild(removeButton);
+        eventsContainer.appendChild(eventContainer);
+      });
+
+      const removeButtons = document.querySelectorAll('.remove-event');
+      removeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const index = this.getAttribute('data-index');
+          events.splice(index, 1);
+          saveEvents();
+          renderEvents();
+          updateGifExpression();
+        });
+      });
+    }
+
+    function saveEvents() {
+      localStorage.setItem('events', JSON.stringify(events));
+    }
+
+    function loadEvents() {
+      const storedEvents = localStorage.getItem('events');
+      if (storedEvents) {
+        events = JSON.parse(storedEvents).map(event => ({
+          ...event,
+          date: new Date(event.date)
+        }));
+      }
+    }
+
+    eventForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const eventName = document.getElementById('eventName').value;
+      const eventDateInput = document.getElementById('eventDate').value;
+      const eventDate = parseDate(eventDateInput);
+      const eventColor = document.getElementById('eventColor').value;
+      events.push({ name: eventName, date: eventDate, color: eventColor });
+      saveEvents();
+      renderEvents();
+      updateGifExpression();
+      eventForm.reset();
+    });
+
+    let events = [];
+    loadEvents();
+    renderEvents();
+    updateGifExpression();
+
+  </script>
+</body>
+</html>
