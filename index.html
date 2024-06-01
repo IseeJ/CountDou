@@ -28,12 +28,12 @@
     const eventsContainer = document.getElementById('events');
     const eventForm = document.getElementById('eventForm');
     const cuteGif = document.getElementById('PET');
+    let events = [];
 
     function getDaysRemaining(eventDate) {
       const oneDay = 24 * 60 * 60 * 1000;
       const today = new Date();
       const diffDays = Math.round((eventDate - today) / oneDay);
-
       return diffDays;
     }
 
@@ -43,9 +43,23 @@
     }
 
     function convertDays(days) {
-      const years = Math.floor(days / 365);
-      const months = Math.floor((days % 365) / 30);
-      const remainingDays = days % 30;
+      const now = new Date();
+      const targetDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+      let years = targetDate.getFullYear() - now.getFullYear();
+      let months = targetDate.getMonth() - now.getMonth();
+      let remainingDays = targetDate.getDate() - now.getDate() + 1;
+
+      if (remainingDays < 0) {
+        months--;
+        const lastMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
+        remainingDays += lastMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
       return { years, months, remainingDays };
     }
 
@@ -58,6 +72,7 @@
 
     function updateGifExpression() {
       const numberOfEvents = events.length;
+
       if (numberOfEvents >= 5) {
         cuteGif.src = 'seaaa.png';
       } else if (numberOfEvents >= 3) {
@@ -136,7 +151,6 @@
       eventForm.reset();
     });
 
-    let events = [];
     loadEvents();
     renderEvents();
     updateGifExpression();
