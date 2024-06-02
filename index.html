@@ -96,12 +96,14 @@
         const textColor = getTextColor(event.color);
         eventElement.style.color = textColor;
 
-        const daysText = daysRemaining >= 0 ? `${years} years ${months} months ${remainingDays} days` : `-${years} years ${months} months ${Math.abs(remainingDays)} days`;
-
+        // const daysText = daysRemaining >= 0 ? `${years} years ${months} months ${remainingDays} days` : `-${years} years ${months} months ${Math.abs(remainingDays)} days`;
+        
+        const daysText = daysRemaining 
+        
         eventElement.innerHTML = `
           <h2><strong>${event.name}</strong></h2>
           <p>${event.date.toDateString()}</p>
-          <p>${daysText}</p>
+          <p>${daysText} days</p>
         `;
         const removeButton = document.createElement('button');
         removeButton.classList.add('remove-event');
