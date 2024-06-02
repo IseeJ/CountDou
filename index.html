@@ -47,7 +47,7 @@
       const targetDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
       let years = targetDate.getFullYear() - now.getFullYear();
       let months = targetDate.getMonth() - now.getMonth();
-      let remainingDays = targetDate.getDate() - now.getDate() + 1;
+      let remainingDays = targetDate.getDate() - now.getDate();
 
       if (remainingDays < 0) {
         months--;
